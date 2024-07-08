@@ -19,7 +19,7 @@ function Checkout() {
   return (
     <section>
       <Nav />
-      <div className="bg-[#8F8F8F] w-full h-[1px]"></div>
+      <div className="bg-[#8F8F8F] w-full h-[1px] max-sm:hidden"></div>
       <section>
         <p className="pl-10 sm:pl-44 pt-9 montserat text-3xl sm:text-5xl font-bold text-[#272727] pb-9">
           Checkout

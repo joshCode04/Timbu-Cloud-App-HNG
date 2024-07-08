@@ -50,15 +50,15 @@ function Cart() {
   return (
     <section className="">
       <Nav />
-      <div className="bg-[#8F8F8F] w-full h-[1px] mb-8"></div>
+      <div className="bg-[#8F8F8F] w-full h-[1px] mb-8 max-sm:hidden"></div>
       <section>
-        <p className="pl-24 max-sm:pl-10 montserat text-5xl max-sm:text-2xl font-bold max-sm:font-semibold text-[#272727] pb-9">
+        <p className="pl-24 max-sm:pl-6 montserat md:text-5xl text-2xl font-bold max-sm:font-semibold text-[#272727] pb-9">
           Carts ({totalItems})
         </p>
         {cartItems.map((item) => (
           <div
             key={item.id}
-            className="flex justify-between mx-4 sm:mx-24 border mb-4 sm:p-0"
+            className="flex justify-between mx-4 sm:mx-24 border mb-4 sm:p-0 shadow-lg"
           >
             <div className="flex gap-5">
               <div className="flex-shrink-0">
@@ -69,24 +69,24 @@ function Cart() {
                 />
               </div>
               <div className="flex flex-col justify-between py-1">
-                <p className="montserat font-semibold text-base md:text-4xl text-[#272727]">
+                <p className="montserat font-semibold text-xs md:text-4xl text-[#272727]">
                   {item.name}
                 </p>
-                <div className="flex flex-col montserat font-normal text-sm md:text-2xl text-[#272727] gap-2">
+                <div className="flex flex-col montserat font-normal text-xs md:text-2xl text-[#272727] gap-2">
                   <p>Size: XL</p>
                   <p className="flex items-center">
                     Color
                     <span className="bg-orange-500 rounded-full ml-2 w-4 h-4 sm:w-6 sm:h-6"></span>
                   </p>
                 </div>
-                <p className="text-[#8F8F8F] font-normal text-base md:text-2xl federant">
+                <p className="text-[#8F8F8F] font-normal text-xs md:text-2xl federant">
                   Stride
                 </p>
               </div>
             </div>
 
             <div className="flex flex-col justify-between py-1">
-              <p className="text-[#002482] font-semibold text-2xl sm:text-[40px] inter">
+              <p className="text-[#002482] font-semibold text-lg md:text-[40px] inter">
                 N
                 {(
                   item.price.replace(/,/g, "") * item.quantity
@@ -95,7 +95,7 @@ function Cart() {
               <div className="flex gap-3 sm:gap-10">
                 <span
                   onClick={() => handleDecrement(item.id)}
-                  className="bg-[#D9D9D9] text-black px-3 sm:px-[8px] h-8 sm:h-10 font-medium text-xl sm:text-3xl rounded cursor-pointer"
+                  className="bg-[#D9D9D9] text-black px-3 md:px-[8px] h-8 sm:h-10 font-medium text-xl sm:text-3xl rounded cursor-pointer"
                 >
                   -
                 </span>
@@ -104,7 +104,7 @@ function Cart() {
                 </p>
                 <span
                   onClick={() => handleIncrement(item.id)}
-                  className="bg-[#D9D9D9] text-black px-3 sm:px-[5px] h-8 sm:h-10 font-medium text-xl sm:text-3xl rounded cursor-pointer"
+                  className="bg-[#D9D9D9] text-black px-2 md:px-[5px] h-8 sm:h-10 font-medium text-xl sm:text-3xl rounded cursor-pointer"
                 >
                   +
                 </span>

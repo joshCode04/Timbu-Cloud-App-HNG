@@ -90,12 +90,12 @@ function Cards() {
 
   return (
     <section>
-      <div className="flex flex-col ml-4 mr-4 mt-[87px] pb-[255px]">
+      <div className="flex flex-col md:ml-4 md:mr-4 mr-0.5 ml-0.5 mt-[87px] pb-20 md:pb-[255px]">
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 lg:pl-8">
           {shoeData.map((shoe) => (
             <div
               key={shoe.id}
-              className="rounded-md hover:shadow-xl md:h-[581.03px] w-[170px] md:w-full"
+              className="rounded-md hover:shadow-xl md:h-[581.03px] w-[168px] md:w-full"
             >
               <img
                 src={shoe.image}
@@ -104,8 +104,8 @@ function Cards() {
                 onClick={handleDetailPage}
               />
               <div className="pt-[17.5px]">
-                <div className="flex flex-col p-2.5 gap-2.5">
-                  <h2 className="text-xl md:text-4xl font-bold text-[#4C8EF0] montserat">
+                <div className="flex flex-col p-2.5 gap-0.5 md:gap-2.5">
+                  <h2 className="text-lg md:text-4xl font-bold text-[#4C8EF0] montserat">
                     {shoe.name}
                   </h2>
                   <p className="text-black text-lg md:text-[32px] lineHeight font-semibold montserat">
@@ -116,7 +116,7 @@ function Cards() {
                   <div className="flex gap-1 md:gap-2">
                     <span
                       onClick={() => handleDecrement(shoe.id)}
-                      className="bg-[#D9D9D9] text-black px-[7px] h-7 md:h-10 font-light md:font-medium text-xl md:text-3xl rounded cursor-pointer"
+                      className="bg-[#D9D9D9] text-black px-[7px] h-6 md:h-10 font-light md:font-medium text-lg md:text-3xl cursor-pointer"
                     >
                       -
                     </span>
@@ -125,7 +125,7 @@ function Cards() {
                     </p>
                     <span
                       onClick={() => handleIncrement(shoe.id)}
-                      className="bg-[#D9D9D9] text-black px-[4px] h-7 md:h-10 font-light md:font-medium text-xl md:text-3xl rounded cursor-pointer"
+                      className="bg-[#D9D9D9] text-center text-black px-[4px] h-6 md:h-10 font-light md:font-medium text-lg md:text-3xl cursor-pointer"
                     >
                       +
                     </span>
@@ -133,7 +133,7 @@ function Cards() {
                   <div>
                     <button
                       onClick={() => handleAddToCart(shoe)}
-                      className="px-2 md:px-4 py-1 md:py-2 rounded-3xl bg-[#0C4395] text-sm md:text-xl text-white font-semibold montserat cursor-pointer hover:text-[#0C4395] hover:bg-white hover:shadow-xl hover:scale-105"
+                      className="px-2.5 md:px-4 py-1.5 md:py-2 rounded-md bg-[#0C4395] text-xs md:text-xl text-white font-semibold montserat cursor-pointer hover:text-[#0C4395] hover:bg-white hover:shadow-xl hover:scale-105"
                     >
                       Add to Cart
                     </button>
