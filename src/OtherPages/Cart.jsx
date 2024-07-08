@@ -4,8 +4,11 @@ import "../MainPage/nav.css";
 import Footer from "../MainPage/Footer";
 import { useNavigate } from "react-router-dom";
 import loader from "/loader.svg";
+import { CartContext } from "../MainPage/cartContext";
+import { useContext } from "react";
 
 function Cart() {
+  const { cartCount } = useContext(CartContext);
   const [cartItems, setCartItems] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -41,7 +44,7 @@ function Cart() {
     localStorage.setItem("cartData", JSON.stringify(updatedCart));
   };
 
-  const totalItems = cartItems.length;
+  // const totalItems = cartItems.length;
   const totalPrice = cartItems.reduce(
     (acc, item) => acc + item.price.replace(/,/g, "") * item.quantity,
     0
@@ -53,7 +56,7 @@ function Cart() {
       <div className="bg-[#8F8F8F] w-full h-[1px] mb-8 max-sm:hidden"></div>
       <section>
         <p className="pl-24 max-sm:pl-6 montserat md:text-5xl text-2xl font-bold max-sm:font-semibold text-[#272727] pb-9">
-          Carts ({totalItems})
+          Carts ({cartCount})
         </p>
         {cartItems.map((item) => (
           <div

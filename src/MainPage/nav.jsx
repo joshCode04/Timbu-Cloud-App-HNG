@@ -1,11 +1,13 @@
 import search from "/cil_search.png";
 import cart from "/cart.png";
 import "./nav.css";
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "./cartContext.jsx";
 // eslint-disable-next-line
 function Nav({ totalItems }) {
   const navigate = useNavigate();
-
+  const { cartCount } = useContext(CartContext);
   const handleNavigateCart = () => {
     navigate("/details");
   };
@@ -44,8 +46,10 @@ function Nav({ totalItems }) {
                 <img src={search} alt="search" className="h-6 w-6" />
               </span>
               <span className="hover:scale-105">
-                <img src={cart} alt="cart" className="h-6 w-6" />
-                <p></p>
+                <img src={cart} alt="cart" className="h-6 w-6 relative" />
+                <span className="bg-orange-500 rounded-full w-4 h-4 absolute pl-1.5 top-24 text-xs text-white font-medium">
+                  {cartCount}
+                </span>
               </span>
             </div>
             <p className="text-base text-[#000000] font-semibold montserat1 max-sm:hidden">

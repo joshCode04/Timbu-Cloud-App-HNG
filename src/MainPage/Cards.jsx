@@ -2,10 +2,13 @@ import "./nav.css";
 import { useEffect, useState } from "react";
 import shoes from "./api.js";
 import { useNavigate } from "react-router-dom";
+import { CartContext } from "./cartContext.jsx";
+import { useContext } from "react";
 
 function Cards() {
   const [shoeData, setShoeData] = useState([]);
   const [cartQuantities, setCartQuantities] = useState({});
+  const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,6 +60,7 @@ function Cards() {
   };
 
   const handleAddToCart = (shoe) => {
+    addToCart();
     setCartQuantities((prevQuantities) => {
       if (prevQuantities[shoe.id] === 0) {
         const updatedQuantities = {

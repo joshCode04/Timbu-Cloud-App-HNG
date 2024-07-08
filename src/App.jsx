@@ -8,14 +8,17 @@ import { Routes, Route } from "react-router-dom";
 import LazyLoadedDiv from "./MainPage/LazyLoadedDiv.jsx";
 import Checkout from "./OtherPages/Checkout.jsx";
 import Payment from "./OtherPages/Payment.jsx";
+import { CartProvider } from "./MainPage/cartContext.jsx";
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />}></Route>
-      <Route path="/details" element={<Cart />}></Route>
-      <Route path="/checkout" element={<Checkout />}></Route>
-      <Route path="/payment" element={<Payment />}></Route>
-    </Routes>
+    <CartProvider>
+      <Routes>
+        <Route path="/" element={<HomePage />}></Route>
+        <Route path="/details" element={<Cart />}></Route>
+        <Route path="/checkout" element={<Checkout />}></Route>
+        <Route path="/payment" element={<Payment />}></Route>
+      </Routes>
+    </CartProvider>
   );
 }
 function HomePage() {
