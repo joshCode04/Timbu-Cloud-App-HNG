@@ -94,7 +94,7 @@ function Cards() {
 
   return (
     <section>
-      <div className="flex flex-col md:ml-4 md:mr-4 mr-0.5 ml-0.5 mt-[87px] pb-20 md:pb-[255px]">
+      <div className="flex flex-col md:ml-4 md:mr-4 mr-0.5 ml-0.5 mt-[87px] max-sm:mt-[14px] pb-20 md:pb-[255px]">
         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 lg:pl-8">
           {shoeData.map((shoe) => (
             <div
