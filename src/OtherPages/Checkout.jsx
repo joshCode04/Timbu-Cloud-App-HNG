@@ -15,15 +15,25 @@ function Checkout() {
       navigate("/payment");
     }, 1500);
   };
-
+  const goBack = () => {
+    navigate(-1);
+  };
   return (
     <section>
       <Nav />
       <div className="bg-[#8F8F8F] w-full h-[1px] max-sm:hidden"></div>
       <section>
-        <p className="pl-10 sm:pl-44 pt-9 montserat text-3xl sm:text-5xl font-bold text-[#272727] pb-9">
-          Checkout
-        </p>
+        <div className="flex pl-10">
+          <span
+            onClick={goBack}
+            className="bg-transparent h-9 pt-2 px-2 shadow text-black rounded-md font-semibold text-sm sm:text-base hover:shadow-xl transition-colors "
+          >
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </span>
+          <p className="pl-10 sm:pl-44 pt-9 montserat text-3xl sm:text-5xl font-bold text-[#272727] pb-9">
+            Checkout
+          </p>
+        </div>
         <div className="flex flex-col justify-center px-4 sm:px-20 md:px-40 lg:px-60 xl:px-80 2xl:px-[300px] gap-4">
           <div className="flex flex-col gap-4">
             <label

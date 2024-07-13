@@ -8,23 +8,41 @@ import master from "/Mastercard.png";
 
 function Payment() {
   const [isLoading1, setIsLoading1] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const navigate = useNavigate();
 
   const handleNavigateCheckout1 = () => {
     setIsLoading1(true);
     setTimeout(() => {
-      navigate("/payment");
+      setIsLoading1(false);
+      setShowSuccessModal(true);
     }, 1500);
   };
 
+  const closeModal = () => {
+    setShowSuccessModal(false);
+    navigate("/");
+    window.location.reload();
+  };
+  const goBack = () => {
+    navigate(-1);
+  };
   return (
     <section>
       <Nav />
       <div className="bg-[#8F8F8F] w-full h-[1px] max-sm:hidden"></div>
       <section>
-        <p className="pl-10 sm:pl-44 pt-9 montserat text-3xl sm:text-5xl font-bold text-[#272727] pb-9">
-          Payment
-        </p>
+        <div className="flex pl-10">
+          <span
+            onClick={goBack}
+            className="bg-transparent h-9 pt-2 px-2 shadow text-black rounded-md font-semibold text-sm sm:text-base hover:shadow-xl transition-colors "
+          >
+            <ion-icon name="arrow-back-outline"></ion-icon>
+          </span>
+          <p className="pl-10 sm:pl-44 pt-9 montserat text-3xl sm:text-5xl font-bold text-[#272727] pb-9">
+            Payment
+          </p>
+        </div>
         <div className="flex flex-col justify-center px-4 sm:px-20 md:px-40 lg:px-60 xl:px-80 2xl:px-96 gap-4">
           <div className="flex items-center relative">
             <span className="absolute inset-y-0 left-3 flex items-center">
@@ -100,6 +118,28 @@ function Payment() {
         </div>
       </section>
       <Footer />
+
+      {/* Success Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
+          <div className="bg-white rounded-lg p-8 max-w-sm w-full">
+            <p className="text-2xl font-semibold text-center mb-4">
+              Payment Successful!
+            </p>
+            <p className="text-center text-gray-700">
+              Thank you for your payment.
+            </p>
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={closeModal}
+                className="bg-[#0C4395] text-white py-3 px-6 rounded-md font-semibold text-xl hover:bg-[#0A3866] transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

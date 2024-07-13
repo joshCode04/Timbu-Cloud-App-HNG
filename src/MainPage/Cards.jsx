@@ -1,134 +1,121 @@
-import "./nav.css";
-import { useEffect, useState } from "react";
-import shoes from "./api.js";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "./cartContext.jsx";
-import { useContext } from "react";
+import PropTypes from "prop-types";
 
-function Cards() {
-  const [shoeData, setShoeData] = useState([]);
+function Cards({ products }) {
   const [cartQuantities, setCartQuantities] = useState({});
   const { addToCart } = useContext(CartContext);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 10;
 
   useEffect(() => {
-    const fetchShoes = async () => {
-      const data = await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(shoes);
-        }, 1000);
-      });
-
-      const initialCartQuantities = data.reduce((acc, shoe) => {
-        acc[shoe.id] = 0;
-        return acc;
-      }, {});
-      setCartQuantities(initialCartQuantities);
-      setShoeData(data);
-    };
-
-    fetchShoes();
+    const savedCart = JSON.parse(localStorage.getItem("cart")) || {};
+    setCartQuantities(savedCart);
   }, []);
 
   useEffect(() => {
-    const savedCart = JSON.parse(localStorage.getItem("cart"));
-    if (savedCart) {
-      setCartQuantities(savedCart);
-    }
-  }, []);
+    localStorage.setItem("cart", JSON.stringify(cartQuantities));
+  }, [cartQuantities]);
 
   const handleIncrement = (id) => {
-    setCartQuantities((prevQuantities) => {
-      const updatedQuantities = {
-        ...prevQuantities,
-        [id]: prevQuantities[id] + 1,
-      };
-      localStorage.setItem("cart", JSON.stringify(updatedQuantities));
-      return updatedQuantities;
-    });
+    setCartQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [id]: (prevQuantities[id] || 0) + 1,
+    }));
   };
 
   const handleDecrement = (id) => {
-    setCartQuantities((prevQuantities) => {
-      const updatedQuantities = {
-        ...prevQuantities,
-        [id]: Math.max(prevQuantities[id] - 1, 0),
-      };
-      localStorage.setItem("cart", JSON.stringify(updatedQuantities));
-      return updatedQuantities;
-    });
+    setCartQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [id]: Math.max((prevQuantities[id] || 0) - 1, 0),
+    }));
   };
 
-  const handleAddToCart = (shoe) => {
+  const handleAddToCart = (product) => {
     addToCart();
-    setCartQuantities((prevQuantities) => {
-      if (prevQuantities[shoe.id] === 0) {
-        const updatedQuantities = {
-          ...prevQuantities,
-          [shoe.id]:
-            Object.keys(prevQuantities).filter((key) => prevQuantities[key] > 0)
-              .length + 1,
-        };
-        localStorage.setItem("cart", JSON.stringify(updatedQuantities));
-        return updatedQuantities;
-      }
-      return prevQuantities;
-    });
+
     const existingCart = JSON.parse(localStorage.getItem("cartData")) || [];
-    const existingItem = existingCart.find((item) => item.id === shoe.id);
+    const existingItem = existingCart.find(
+      (item) => item.unique_id === product.unique_id
+    );
 
     let updatedCart;
     if (existingItem) {
       updatedCart = existingCart.map((item) =>
-        item.id === shoe.id ? { ...item, quantity: item.quantity + 1 } : item
+        item.unique_id === product.unique_id
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
       );
     } else {
-      updatedCart = [...existingCart, { ...shoe, quantity: 1 }];
+      updatedCart = [...existingCart, { ...product, quantity: 1 }];
     }
     localStorage.setItem("cartData", JSON.stringify(updatedCart));
+
+    // Update local state to trigger re-render
+    setCartQuantities((prevQuantities) => ({
+      ...prevQuantities,
+      [product.unique_id]: (prevQuantities[product.unique_id] || 0) + 1,
+    }));
   };
 
   const handleDetailPage = () => {
     navigate("/details");
   };
 
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+  const currentProducts = products.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  if (!currentProducts.length) {
+    return <div>Loading...</div>;
+  }
+
+  console.log("Rendering products in Cards:", currentProducts);
+
   return (
-    <section>
+    <section className="">
       <div className="flex flex-col md:ml-4 md:mr-4 mr-0.5 ml-0.5 mt-[87px] max-sm:mt-[14px] pb-20 md:pb-[255px]">
-        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 lg:pl-8">
-          {shoeData.map((shoe) => (
+        <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-2 lg:pl-8 xl:ml-0 max-[1023px]:ml-10 max-md:ml-3">
+          {currentProducts.map((product) => (
             <div
-              key={shoe.id}
-              className="rounded-md hover:shadow-xl md:h-[581.03px] w-[168px] md:w-full"
+              key={product.unique_id}
+              className="rounded-md hover:shadow-2xl xl:h-[581.03px] max-sm:w-[168px] xl:w-[400px] md:w-[300px] max-[767px]:w-[300px]"
             >
               <img
-                src={shoe.image}
-                alt={shoe.name}
-                className="w-[170px] md:w-[400px] h-[160px] md:h-[369px] cursor-pointer"
+                src={`https://api.timbu.cloud/images/${product.photos[0]?.url}`}
+                alt={product.name}
+                className="w-[170px] xl:w-[400px] max-[639px]:h-[160px] xl:h-[369px] md:w-[300px] md:h-[269px] max-[767px]:h-[269px] max-[767px]:w-[300px] cursor-pointer"
                 onClick={handleDetailPage}
               />
               <div className="pt-[17.5px]">
                 <div className="flex flex-col p-2.5 gap-0.5 md:gap-2.5">
-                  <h2 className="text-lg md:text-4xl font-bold text-[#4C8EF0] montserat">
-                    {shoe.name}
+                  <h2 className="text-base md:text-2xl font-bold text-[#4C8EF0] montserat">
+                    {product.name}
                   </h2>
                   <p className="text-black text-lg md:text-[32px] lineHeight font-semibold montserat">
-                    N{shoe.price}
+                    N{product.current_price?.[0]?.NGN?.[0] ?? "N/A"}
                   </p>
                 </div>
                 <div className="flex p-0.5 md:p-2.5 justify-between">
                   <div className="flex gap-1 md:gap-2">
                     <span
-                      onClick={() => handleDecrement(shoe.id)}
+                      onClick={() => handleDecrement(product.unique_id)}
                       className="bg-[#D9D9D9] text-black px-[7px] h-6 md:h-10 font-light md:font-medium text-lg md:text-3xl cursor-pointer"
                     >
                       -
                     </span>
                     <p className="montserat text-xl md:text-3xl cursor-default">
-                      {cartQuantities[shoe.id]}
+                      {cartQuantities[product.unique_id] || 0}
                     </p>
                     <span
-                      onClick={() => handleIncrement(shoe.id)}
+                      onClick={() => handleIncrement(product.unique_id)}
                       className="bg-[#D9D9D9] text-center text-black px-[4px] h-6 md:h-10 font-light md:font-medium text-lg md:text-3xl cursor-pointer"
                     >
                       +
@@ -136,8 +123,13 @@ function Cards() {
                   </div>
                   <div>
                     <button
-                      onClick={() => handleAddToCart(shoe)}
-                      className="px-2.5 md:px-4 py-1.5 md:py-2 rounded-md bg-[#0C4395] text-xs md:text-xl text-white font-semibold montserat cursor-pointer hover:text-[#0C4395] hover:bg-white hover:shadow-xl hover:scale-105"
+                      onClick={() => handleAddToCart(product)}
+                      disabled={cartQuantities[product.unique_id] <= 0} // Disable if quantity is 0 or undefined
+                      className={`px-2.5 md:px-4 py-1.5 md:py-2 rounded-md bg-[#0C4395] text-xs md:text-xl text-white font-semibold montserat cursor-pointer ${
+                        cartQuantities[product.unique_id] <= 0
+                          ? "opacity-50 cursor-not-allowed"
+                          : "hover:text-[#0C4395] hover:bg-white hover:shadow-xl hover:scale-105"
+                      }`}
                     >
                       Add to Cart
                     </button>
@@ -147,9 +139,49 @@ function Cards() {
             </div>
           ))}
         </div>
+        <div className="flex justify-center mt-4">
+          {Array.from(
+            { length: Math.ceil(products.length / productsPerPage) },
+            (_, index) => (
+              <button
+                key={index}
+                onClick={() => paginate(index + 1)}
+                className={`mx-1 px-3 py-1 rounded-md bg-[#0C4395] text-white font-semibold cursor-pointer ${
+                  currentPage === index + 1
+                    ? "bg-[#4C8EF0] active:bg-[#0C4395] active:text-white"
+                    : "hover:bg-[#4C8EF0] hover:text-white"
+                } focus:outline-none`}
+              >
+                {index + 1}
+              </button>
+            )
+          )}
+        </div>
       </div>
     </section>
   );
 }
+
+Cards.propTypes = {
+  products: PropTypes.arrayOf(
+    PropTypes.shape({
+      unique_id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      photos: PropTypes.arrayOf(
+        PropTypes.shape({
+          url: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+      current_price: PropTypes.arrayOf(
+        PropTypes.shape({
+          NGN: PropTypes.arrayOf(
+            PropTypes.oneOfType([PropTypes.number, PropTypes.oneOf([null])])
+              .isRequired
+          ).isRequired,
+        })
+      ).isRequired,
+    })
+  ).isRequired,
+};
 
 export default Cards;

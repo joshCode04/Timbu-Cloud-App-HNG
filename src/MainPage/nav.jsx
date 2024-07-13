@@ -1,18 +1,15 @@
 import search from "/cil_search.png";
 import cart from "/cart.png";
 import "./nav.css";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { CartContext } from "./cartContext.jsx";
-// eslint-disable-next-line
-function Nav({ totalItems }) {
+function Nav() {
   const navigate = useNavigate();
-  const { cartCount } = useContext(CartContext);
   const handleNavigateCart = () => {
     navigate("/details");
   };
   const handleNavigateHome = () => {
     navigate("/");
+    window.location.reload();
   };
   return (
     <>
@@ -24,7 +21,6 @@ function Nav({ totalItems }) {
             alt="stride"
             onClick={handleNavigateHome}
           />
-          <span>{totalItems}</span>
         </div>
         <div className="flex items-center relative max-sm:justify-between">
           <span className="absolute max-sm:hidden inset-y-0 left-0 flex items-center pl-[41.15px]">
@@ -33,7 +29,7 @@ function Nav({ totalItems }) {
           <input
             type="text"
             placeholder="Search"
-            className="montserat h-[64px] w-[552px] max-sm:w-[120px] rounded-full bg-[#D9D9D9] focus:bg-white flex-1 pl-20 max-sm:pl-3 focus:outline text-2xl font-extralight max-sm:hidden"
+            className="montserat h-[64px] w-[552px] max-sm:w-[120px] max-[804px]:w-[400px] rounded-full bg-[#D9D9D9] focus:bg-white flex-1 pl-20 max-sm:pl-3 focus:outline text-2xl font-extralight max-sm:hidden"
           />
         </div>
         <div className="flex gap-5 items-center">
@@ -42,14 +38,11 @@ function Nav({ totalItems }) {
             onClick={handleNavigateCart}
           >
             <div className="max-sm:flex max-sm:gap-20">
-              <span className="max-sm:pl-0 inset-y-0 relative left-10 flex items-center pl-[41.15px] md:hidden">
+              <span className="max-sm:pl-0 inset-y-0 relative left-10 flex items-center pl-[41.15px] min-[639px]:hidden">
                 <img src={search} alt="search" className="h-6 w-6" />
               </span>
               <span className="hover:scale-105">
                 <img src={cart} alt="cart" className="h-6 w-6 relative" />
-                <span className="bg-orange-500 rounded-full w-4 h-4 absolute pl-1.5 top-24 text-xs text-white font-medium">
-                  {cartCount}
-                </span>
               </span>
             </div>
             <p className="text-base text-[#000000] font-semibold montserat1 max-sm:hidden">
