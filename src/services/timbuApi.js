@@ -1,7 +1,7 @@
 export const getProducts = async () => {
   try {
     const response = await fetch(
-      "https://api.timbu.cloud/products?organization_id=0de666116e3f462091bde71fb3640dc9&Appid=Q2RRZW5O443IO7F&Apikey=f96b546f72af4dd58c1e9ffe6cd7e39520240712185804901395",
+      "https://api.timbu.cloud/products?organization_id=6b919078eb4e4cd9ac9f263638ffe061&Appid=01KI2E6WXAWR9WC&Apikey=fc133cbb378a48f1b25041f0ada05f9320241031074316624811",
       {
         method: "GET",
         headers: {
